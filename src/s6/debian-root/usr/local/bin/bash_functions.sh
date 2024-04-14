@@ -112,6 +112,9 @@ ensure_basic_configuration() {
         # User is not passing in a custom location - so force FTL to use the file we moved to / during the build
         changeFTLsetting "MACVENDORDB" "/macvendor.db"
     fi
+	# Make it writeable by lighthttpd, otherwise the user can't change settings via UI
+	chgrp "$LIGHTTPD_GROUP" "$setupVars"
+	chmod g+w "$setupVars"
 
     # When fresh empty directory volumes are used then we need to create this file
     if [ ! -f /etc/dnsmasq.d/01-pihole.conf ] ; then
